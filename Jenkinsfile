@@ -1,7 +1,6 @@
 pipeline {
 agent any
 
-```
 environment {
     DOCKER_HUB_REPO = "yuvarajrolex/react-app"
     EC2_IP = "13.126.82.210"
@@ -66,6 +65,6 @@ post {
         echo 'Pipeline failed — check logs above.'
     }
 }
-```
+
 
 }
