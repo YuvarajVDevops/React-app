@@ -36,22 +36,19 @@ pipeline {
         }
 
         stage('Deploy to EC2') {
-            steps {
-                withCredentials([sshUserPrivateKey(
-                    credentialsId: 'ec2-ssh-key',
-                    keyFileVariable: 'SSH_KEY'
-                )]) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no -i $SSH_KEY ${EC2_USER}@${EC2_IP} "
-                        docker pull ${DOCKER_HUB_REPO}:latest &&
-                        docker stop react-app || true &&
-                        docker rm react-app || true &&
-                        docker run -d -p 3000:3000 --name react-app 
-                        "
-                    '''
-                }
-            }
-        }
+    steps {
+        sh '''
+            ssh -o StrictHostKeyChecking=no \
+            -i /var/lib/jenkins/rolex.pem \
+            ${EC2_USER}@${EC2_IP} "
+            docker pull ${DOCKER_HUB_REPO}:latest &&
+            docker stop react-app || true &&
+            docker rm react-app || true &&
+            docker run -d -p 80:80 --name react-app ${DOCKER_HUB_REPO}:latest
+            "
+        '''
+    }
+}
     }
 
     post {
