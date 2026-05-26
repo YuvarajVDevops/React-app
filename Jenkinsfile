@@ -1,7 +1,11 @@
 
 pipeline {
     agent any
-
+    
+ triggers {
+        githubPush()    // ← add this block
+    }
+    
     environment {
         DOCKER_HUB_REPO = "yuvarajrolex/react-app"
         EC2_IP = "3.111.245.62"
